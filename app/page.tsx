@@ -46,16 +46,19 @@ export default function Home() {
       setUser(result.user);
 
       fetchNotes(result.user.uid);
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
-      alert("Login failed");
+
+      alert(error.message);
     }
   };
 
   /* ---------------- LOGOUT ---------------- */
   const logout = async () => {
     await signOut(auth);
+
     setUser(null);
+
     setNotes([]);
   };
 
@@ -77,6 +80,7 @@ export default function Home() {
 
     if (editId) {
       await deleteDoc(doc(db, `users/${user.uid}/notes`, editId));
+
       setEditId(null);
     }
 
@@ -86,6 +90,7 @@ export default function Home() {
     });
 
     setTitle("");
+
     setBody("");
 
     fetchNotes(user.uid);
@@ -103,7 +108,9 @@ export default function Home() {
   /* ---------------- EDIT NOTE ---------------- */
   const startEdit = (note: any) => {
     setTitle(note.title);
+
     setBody(note.body);
+
     setEditId(note.id);
   };
 
