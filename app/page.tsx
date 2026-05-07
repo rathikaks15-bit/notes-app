@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { db, auth, provider } from "@/lib/firebase";
+
 import {
   signInWithPopup,
   signOut,
@@ -24,27 +25,44 @@ export default function Home() {
   const [body, setBody] = useState("");
   const [editId, setEditId] = useState<string | null>(null);
 
+  /* ---------------- AUTH ---------------- */
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (u) => {
       setUser(u);
-      if (u) fetchNotes(u.uid);
+
+      if (u) {
+        fetchNotes(u.uid);
+      }
     });
 
     return () => unsub();
   }, []);
 
+  /* ---------------- LOGIN ---------------- */
   const login = async () => {
-    await signInWithPopup(auth, provider);
+    try {
+      const result = await signInWithPopup(auth, provider);
+
+      setUser(result.user);
+
+      fetchNotes(result.user.uid);
+    } catch (error) {
+      console.log(error);
+      alert("Login failed");
+    }
   };
 
+  /* ---------------- LOGOUT ---------------- */
   const logout = async () => {
     await signOut(auth);
     setUser(null);
     setNotes([]);
   };
 
+  /* ---------------- FETCH NOTES ---------------- */
   const fetchNotes = async (uid: string) => {
     const snap = await getDocs(collection(db, `users/${uid}/notes`));
+
     setNotes(
       snap.docs.map((doc) => ({
         id: doc.id,
@@ -53,6 +71,7 @@ export default function Home() {
     );
   };
 
+  /* ---------------- ADD NOTE ---------------- */
   const addNote = async () => {
     if (!user || !title || !body) return;
 
@@ -68,22 +87,27 @@ export default function Home() {
 
     setTitle("");
     setBody("");
+
     fetchNotes(user.uid);
   };
 
+  /* ---------------- DELETE NOTE ---------------- */
   const deleteNote = async (id: string) => {
     if (!user) return;
+
     await deleteDoc(doc(db, `users/${user.uid}/notes`, id));
+
     fetchNotes(user.uid);
   };
 
+  /* ---------------- EDIT NOTE ---------------- */
   const startEdit = (note: any) => {
     setTitle(note.title);
     setBody(note.body);
     setEditId(note.id);
   };
 
-  /* ---------------- LOGIN ---------------- */
+  /* ---------------- LOGIN PAGE ---------------- */
   if (!user) {
     return (
       <main
@@ -92,8 +116,8 @@ export default function Home() {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          fontFamily: "Arial",
           background: "#FCF6D9",
+          fontFamily: "Arial",
         }}
       >
         <div
@@ -101,36 +125,47 @@ export default function Home() {
             textAlign: "center",
             background: "#fffdf5",
             padding: "50px",
-            borderRadius: "18px",
+            borderRadius: "20px",
             border: "1px solid #e8dec0",
             boxShadow: "0 20px 40px rgba(69,40,41,0.15)",
+            width: "90%",
+            maxWidth: "420px",
           }}
         >
           <h1
             style={{
-              fontSize: "46px",
-              fontWeight: "900",
+              fontSize: "52px",
               color: "#452829",
+              marginBottom: "10px",
+              fontWeight: "900",
             }}
           >
             📒 Notes App
           </h1>
 
-          <p style={{ color: "#452829", opacity: 0.7, marginBottom: "20px" }}>
+          <p
+            style={{
+              color: "#452829",
+              opacity: 0.7,
+              marginBottom: "30px",
+              fontSize: "16px",
+            }}
+          >
             Coffee • Calm • Classic Journal
           </p>
 
           <button
             onClick={login}
             style={{
-              padding: "12px 22px",
+              padding: "14px 24px",
               background: "#452829",
               color: "#fff",
               border: "none",
-              borderRadius: "10px",
+              borderRadius: "12px",
               cursor: "pointer",
               fontWeight: "700",
-              fontSize: "16px",
+              fontSize: "17px",
+              width: "100%",
             }}
           >
             Login with Google
@@ -140,14 +175,14 @@ export default function Home() {
     );
   }
 
-  /* ---------------- MAIN UI ---------------- */
+  /* ---------------- MAIN APP ---------------- */
   return (
     <main
       style={{
         minHeight: "100vh",
         padding: "30px",
-        fontFamily: "Arial",
         background: "#FCF6D9",
+        fontFamily: "Arial",
       }}
     >
       <div style={{ maxWidth: "720px", margin: "auto" }}>
@@ -158,11 +193,17 @@ export default function Home() {
             padding: "22px",
             borderRadius: "16px",
             border: "1px solid #e8dec0",
-            boxShadow: "0 10px 25px rgba(69,40,41,0.12)",
             marginBottom: "20px",
+            boxShadow: "0 10px 20px rgba(69,40,41,0.08)",
           }}
         >
-          <h1 style={{ color: "#452829", fontSize: "32px" }}>
+          <h1
+            style={{
+              color: "#452829",
+              fontSize: "34px",
+              marginBottom: "10px",
+            }}
+          >
             📒 My Notes
           </h1>
 
@@ -173,27 +214,28 @@ export default function Home() {
           <button
             onClick={logout}
             style={{
-              marginTop: "10px",
+              marginTop: "14px",
               background: "#452829",
               color: "#fff",
               border: "none",
-              padding: "8px 14px",
-              borderRadius: "8px",
+              padding: "10px 16px",
+              borderRadius: "10px",
               cursor: "pointer",
+              fontWeight: "700",
             }}
           >
             Logout
           </button>
         </div>
 
-        {/* INPUT */}
+        {/* INPUT AREA */}
         <div
           style={{
             background: "#fffdf5",
             padding: "22px",
             borderRadius: "16px",
-            border: "1px solid #e8dec0",
             marginBottom: "20px",
+            boxShadow: "0 10px 20px rgba(69,40,41,0.08)",
           }}
         >
           <input
@@ -202,29 +244,29 @@ export default function Home() {
             onChange={(e) => setTitle(e.target.value)}
             style={{
               width: "100%",
-              padding: "12px",
-              marginBottom: "10px",
+              padding: "14px",
+              marginBottom: "12px",
               borderRadius: "10px",
               border: "1px solid #e8dec0",
+              fontSize: "16px",
               outline: "none",
-              color: "#452829",
-              background: "#FCF6D9",
             }}
           />
 
-          <input
-            placeholder="Body"
+          <textarea
+            placeholder="Write your note..."
             value={body}
             onChange={(e) => setBody(e.target.value)}
+            rows={4}
             style={{
               width: "100%",
-              padding: "12px",
-              marginBottom: "10px",
+              padding: "14px",
+              marginBottom: "12px",
               borderRadius: "10px",
               border: "1px solid #e8dec0",
+              fontSize: "16px",
               outline: "none",
-              color: "#452829",
-              background: "#FCF6D9",
+              resize: "none",
             }}
           />
 
@@ -232,13 +274,14 @@ export default function Home() {
             onClick={addNote}
             style={{
               width: "100%",
-              padding: "12px",
+              padding: "14px",
               background: "#452829",
               color: "#fff",
               border: "none",
               borderRadius: "10px",
-              fontWeight: "700",
               cursor: "pointer",
+              fontWeight: "700",
+              fontSize: "16px",
             }}
           >
             {editId ? "Update Note ✏️" : "Add Note"}
@@ -247,7 +290,13 @@ export default function Home() {
 
         {/* NOTES */}
         {notes.length === 0 ? (
-          <p style={{ textAlign: "center", color: "#452829" }}>
+          <p
+            style={{
+              textAlign: "center",
+              color: "#452829",
+              fontSize: "18px",
+            }}
+          >
             No notes yet ✨
           </p>
         ) : (
@@ -256,15 +305,31 @@ export default function Home() {
               key={note.id}
               style={{
                 background: "#fffdf5",
-                padding: "16px",
+                padding: "18px",
                 borderRadius: "16px",
-                marginBottom: "12px",
+                marginBottom: "14px",
                 border: "1px solid #e8dec0",
-                boxShadow: "0 8px 18px rgba(69,40,41,0.10)",
+                boxShadow: "0 10px 20px rgba(69,40,41,0.08)",
               }}
             >
-              <h3 style={{ color: "#452829" }}>{note.title}</h3>
-              <p style={{ color: "#452829", opacity: 0.8 }}>
+              <h3
+                style={{
+                  color: "#452829",
+                  fontSize: "24px",
+                  marginBottom: "8px",
+                }}
+              >
+                {note.title}
+              </h3>
+
+              <p
+                style={{
+                  color: "#452829",
+                  opacity: 0.8,
+                  marginBottom: "14px",
+                  whiteSpace: "pre-wrap",
+                }}
+              >
                 {note.body}
               </p>
 
@@ -275,9 +340,10 @@ export default function Home() {
                   background: "#452829",
                   color: "#fff",
                   border: "none",
-                  padding: "6px 10px",
+                  padding: "8px 12px",
                   borderRadius: "8px",
                   cursor: "pointer",
+                  fontWeight: "700",
                 }}
               >
                 Edit
@@ -289,9 +355,10 @@ export default function Home() {
                   background: "#7a3e3e",
                   color: "#fff",
                   border: "none",
-                  padding: "6px 10px",
+                  padding: "8px 12px",
                   borderRadius: "8px",
                   cursor: "pointer",
+                  fontWeight: "700",
                 }}
               >
                 Delete
