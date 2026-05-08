@@ -117,263 +117,291 @@ export default function Home() {
   /* ---------------- LOGIN PAGE ---------------- */
   if (!user) {
     return (
-      <main
-        style={{
-          height: "100vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          background: "#FCF6D9",
-          fontFamily: "Arial",
-        }}
-      >
-        <div
+      <>
+        <main
           style={{
-            textAlign: "center",
-            background: "#fffdf5",
-            padding: "50px",
-            borderRadius: "20px",
-            border: "1px solid #e8dec0",
-            boxShadow: "0 20px 40px rgba(69,40,41,0.15)",
-            width: "90%",
-            maxWidth: "420px",
+            height: "100vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            background: "#FCF6D9",
+            fontFamily: "Arial",
           }}
         >
-          <h1
+          <div
             style={{
-              fontSize: "52px",
-              color: "#452829",
-              marginBottom: "10px",
-              fontWeight: "900",
+              textAlign: "center",
+              background: "#fffdf5",
+              padding: "50px",
+              borderRadius: "20px",
+              border: "1px solid #e8dec0",
+              boxShadow: "0 20px 40px rgba(69,40,41,0.15)",
+              width: "90%",
+              maxWidth: "420px",
             }}
           >
-            📒 Notes App
-          </h1>
+            <h1
+              style={{
+                fontSize: "52px",
+                color: "#452829",
+                marginBottom: "10px",
+                fontWeight: "900",
+              }}
+            >
+              📒 Notes App
+            </h1>
 
-          <p
-            style={{
-              color: "#452829",
-              opacity: 0.7,
-              marginBottom: "30px",
-              fontSize: "16px",
-            }}
-          >
-            Coffee • Calm • Classic Journal
-          </p>
+            <p
+              style={{
+                color: "#452829",
+                opacity: 0.7,
+                marginBottom: "30px",
+                fontSize: "16px",
+              }}
+            >
+              Coffee • Calm • Classic Journal
+            </p>
 
-          <button
-            onClick={login}
-            style={{
-              padding: "14px 24px",
-              background: "#452829",
-              color: "#fff",
-              border: "none",
-              borderRadius: "12px",
-              cursor: "pointer",
-              fontWeight: "700",
-              fontSize: "17px",
-              width: "100%",
-            }}
-          >
-            Login with Google
-          </button>
-        </div>
-      </main>
+            <button
+              onClick={login}
+              style={{
+                padding: "14px 24px",
+                background: "#452829",
+                color: "#fff",
+                border: "none",
+                borderRadius: "12px",
+                cursor: "pointer",
+                fontWeight: "700",
+                fontSize: "17px",
+                width: "100%",
+              }}
+            >
+              Login with Google
+            </button>
+          </div>
+        </main>
+
+        <style jsx global>{`
+          .custom-input::placeholder {
+            color: #555 !important;
+            opacity: 1;
+          }
+        `}</style>
+      </>
     );
   }
 
   /* ---------------- MAIN APP ---------------- */
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        padding: "30px",
-        background: "#FCF6D9",
-        fontFamily: "Arial",
-      }}
-    >
-      <div style={{ maxWidth: "720px", margin: "auto" }}>
-        {/* HEADER */}
-        <div
-          style={{
-            background: "#fffdf5",
-            padding: "22px",
-            borderRadius: "16px",
-            border: "1px solid #e8dec0",
-            marginBottom: "20px",
-            boxShadow: "0 10px 20px rgba(69,40,41,0.08)",
-          }}
-        >
-          <h1
+    <>
+      <main
+        style={{
+          minHeight: "100vh",
+          padding: "30px",
+          background: "#FCF6D9",
+          fontFamily: "Arial",
+        }}
+      >
+        <div style={{ maxWidth: "720px", margin: "auto" }}>
+          {/* HEADER */}
+          <div
             style={{
-              color: "#452829",
-              fontSize: "34px",
-              marginBottom: "10px",
-            }}
-          >
-            📒 My Notes
-          </h1>
-
-          <p style={{ color: "#452829", opacity: 0.7 }}>
-            Logged in as: <b>{user.email}</b>
-          </p>
-
-          <button
-            onClick={logout}
-            style={{
-              marginTop: "14px",
-              background: "#452829",
-              color: "#fff",
-              border: "none",
-              padding: "10px 16px",
-              borderRadius: "10px",
-              cursor: "pointer",
-              fontWeight: "700",
-            }}
-          >
-            Logout
-          </button>
-        </div>
-
-        {/* INPUT AREA */}
-        <div
-          style={{
-            background: "#fffdf5",
-            padding: "22px",
-            borderRadius: "16px",
-            marginBottom: "20px",
-            boxShadow: "0 10px 20px rgba(69,40,41,0.08)",
-          }}
-        >
-          <input
-            placeholder="Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            style={{
-              width: "100%",
-              padding: "14px",
-              marginBottom: "12px",
-              borderRadius: "10px",
+              background: "#fffdf5",
+              padding: "22px",
+              borderRadius: "16px",
               border: "1px solid #e8dec0",
-              fontSize: "16px",
-              outline: "none",
-            }}
-          />
-
-          <textarea
-            placeholder="Write your note..."
-            value={body}
-            onChange={(e) => setBody(e.target.value)}
-            rows={4}
-            style={{
-              width: "100%",
-              padding: "14px",
-              marginBottom: "12px",
-              borderRadius: "10px",
-              border: "1px solid #e8dec0",
-              fontSize: "16px",
-              outline: "none",
-              resize: "none",
-            }}
-          />
-
-          <button
-            onClick={addNote}
-            style={{
-              width: "100%",
-              padding: "14px",
-              background: "#452829",
-              color: "#fff",
-              border: "none",
-              borderRadius: "10px",
-              cursor: "pointer",
-              fontWeight: "700",
-              fontSize: "16px",
+              marginBottom: "20px",
+              boxShadow: "0 10px 20px rgba(69,40,41,0.08)",
             }}
           >
-            {editId ? "Update Note ✏️" : "Add Note"}
-          </button>
-        </div>
-
-        {/* NOTES */}
-        {notes.length === 0 ? (
-          <p
-            style={{
-              textAlign: "center",
-              color: "#452829",
-              fontSize: "18px",
-            }}
-          >
-            No notes yet ✨
-          </p>
-        ) : (
-          notes.map((note) => (
-            <div
-              key={note.id}
+            <h1
               style={{
-                background: "#fffdf5",
-                padding: "18px",
-                borderRadius: "16px",
-                marginBottom: "14px",
-                border: "1px solid #e8dec0",
-                boxShadow: "0 10px 20px rgba(69,40,41,0.08)",
+                color: "#452829",
+                fontSize: "34px",
+                marginBottom: "10px",
               }}
             >
-              <h3
-                style={{
-                  color: "#452829",
-                  fontSize: "24px",
-                  marginBottom: "8px",
-                }}
-              >
-                {note.title}
-              </h3>
+              📒 My Notes
+            </h1>
 
-              <p
+            <p style={{ color: "#452829", opacity: 0.7 }}>
+              Logged in as: <b>{user.email}</b>
+            </p>
+
+            <button
+              onClick={logout}
+              style={{
+                marginTop: "14px",
+                background: "#452829",
+                color: "#fff",
+                border: "none",
+                padding: "10px 16px",
+                borderRadius: "10px",
+                cursor: "pointer",
+                fontWeight: "700",
+              }}
+            >
+              Logout
+            </button>
+          </div>
+
+          {/* INPUT AREA */}
+          <div
+            style={{
+              background: "#fffdf5",
+              padding: "22px",
+              borderRadius: "16px",
+              marginBottom: "20px",
+              boxShadow: "0 10px 20px rgba(69,40,41,0.08)",
+            }}
+          >
+            <input
+              className="custom-input"
+              placeholder="Title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              style={{
+                width: "100%",
+                padding: "14px",
+                marginBottom: "12px",
+                borderRadius: "10px",
+                border: "1px solid #e8dec0",
+                fontSize: "16px",
+                outline: "none",
+                color: "#000000",
+                backgroundColor: "#ffffff",
+                WebkitTextFillColor: "#000",
+                opacity: 1,
+              }}
+            />
+
+            <textarea
+              className="custom-input"
+              placeholder="Write your note..."
+              value={body}
+              onChange={(e) => setBody(e.target.value)}
+              rows={4}
+              style={{
+                width: "100%",
+                padding: "14px",
+                marginBottom: "12px",
+                borderRadius: "10px",
+                border: "1px solid #e8dec0",
+                fontSize: "16px",
+                outline: "none",
+                resize: "none",
+                color: "#000000",
+                backgroundColor: "#ffffff",
+                WebkitTextFillColor: "#000",
+                opacity: 1,
+              }}
+            />
+
+            <button
+              onClick={addNote}
+              style={{
+                width: "100%",
+                padding: "14px",
+                background: "#452829",
+                color: "#fff",
+                border: "none",
+                borderRadius: "10px",
+                cursor: "pointer",
+                fontWeight: "700",
+                fontSize: "16px",
+              }}
+            >
+              {editId ? "Update Note ✏️" : "Add Note"}
+            </button>
+          </div>
+
+          {/* NOTES */}
+          {notes.length === 0 ? (
+            <p
+              style={{
+                textAlign: "center",
+                color: "#452829",
+                fontSize: "18px",
+              }}
+            >
+              No notes yet ✨
+            </p>
+          ) : (
+            notes.map((note) => (
+              <div
+                key={note.id}
                 style={{
-                  color: "#452829",
-                  opacity: 0.8,
+                  background: "#fffdf5",
+                  padding: "18px",
+                  borderRadius: "16px",
                   marginBottom: "14px",
-                  whiteSpace: "pre-wrap",
+                  border: "1px solid #e8dec0",
+                  boxShadow: "0 10px 20px rgba(69,40,41,0.08)",
                 }}
               >
-                {note.body}
-              </p>
+                <h3
+                  style={{
+                    color: "#452829",
+                    fontSize: "24px",
+                    marginBottom: "8px",
+                  }}
+                >
+                  {note.title}
+                </h3>
 
-              <button
-                onClick={() => startEdit(note)}
-                style={{
-                  marginRight: "8px",
-                  background: "#452829",
-                  color: "#fff",
-                  border: "none",
-                  padding: "8px 12px",
-                  borderRadius: "8px",
-                  cursor: "pointer",
-                  fontWeight: "700",
-                }}
-              >
-                Edit
-              </button>
+                <p
+                  style={{
+                    color: "#452829",
+                    opacity: 0.8,
+                    marginBottom: "14px",
+                    whiteSpace: "pre-wrap",
+                  }}
+                >
+                  {note.body}
+                </p>
 
-              <button
-                onClick={() => deleteNote(note.id)}
-                style={{
-                  background: "#7a3e3e",
-                  color: "#fff",
-                  border: "none",
-                  padding: "8px 12px",
-                  borderRadius: "8px",
-                  cursor: "pointer",
-                  fontWeight: "700",
-                }}
-              >
-                Delete
-              </button>
-            </div>
-          ))
-        )}
-      </div>
-    </main>
+                <button
+                  onClick={() => startEdit(note)}
+                  style={{
+                    marginRight: "8px",
+                    background: "#452829",
+                    color: "#fff",
+                    border: "none",
+                    padding: "8px 12px",
+                    borderRadius: "8px",
+                    cursor: "pointer",
+                    fontWeight: "700",
+                  }}
+                >
+                  Edit
+                </button>
+
+                <button
+                  onClick={() => deleteNote(note.id)}
+                  style={{
+                    background: "#7a3e3e",
+                    color: "#fff",
+                    border: "none",
+                    padding: "8px 12px",
+                    borderRadius: "8px",
+                    cursor: "pointer",
+                    fontWeight: "700",
+                  }}
+                >
+                  Delete
+                </button>
+              </div>
+            ))
+          )}
+        </div>
+      </main>
+
+      <style jsx global>{`
+        .custom-input::placeholder {
+          color: #555 !important;
+          opacity: 1;
+        }
+      `}</style>
+    </>
   );
 }
